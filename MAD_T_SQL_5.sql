@@ -102,7 +102,7 @@ CONSTRAINT con_pkcli PRIMARY KEY( rfc  )
 
 CREATE TABLE reservaciones(
 clave_reservacion int identity(100000,10),
-id_habitacion INT FOREIGN KEY REFERENCES habitacion_hotel (id_hab),
+id_habi INT FOREIGN KEY REFERENCES habitacion_hotel (id_hab),
 rfc VARCHAR(13) FOREIGN KEY REFERENCES cliente (rfc),
 cant_pers int,
 anticipo money ,
