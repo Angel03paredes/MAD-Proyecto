@@ -16,7 +16,7 @@ ALTER PROCEDURE [dbo].[SP_RESERVACION]
 @monto Money = null
 
 AS
-Delete From reservaciones 
+--Delete From reservaciones 
 IF @caso = 1
 Begin
 
@@ -79,7 +79,7 @@ FULL OUTER JOIN habitacion as TIPO ON ROOM.id_habitacion =TIPO.id_habitacion
 LEFT JOIN reservaciones as CHECKED ON CHECKED.id_hab = ROOM.id_hab
 
 
-WHERE WESTERN.nombre = @clave_hotel  AND  CHECKED.fecha_ini is null  AND CHECKED.fecha_fin is null 
+WHERE WESTERN.nombre = @clave_hotel 
 
  
 
