@@ -1,0 +1,7 @@
+CREATE VIEW dbo.VW_HISTORIAL_CL
+AS
+SELECT        D.nombre AS Hotel, B.fecha_ini AS [DE:], B.fecha_fin AS [A:], ISNULL(B.pago_total, '0') AS [Total Neto], B.cant_pers AS Personas, B.clave_reservacion AS Folio, B.rfc
+FROM            dbo.cliente AS A INNER JOIN
+                         dbo.reservaciones AS B ON A.rfc = B.rfc INNER JOIN
+                         dbo.habitacion_hotel AS C ON C.id_hab = B.id_hab INNER JOIN
+                         dbo.hotel AS D ON D.clave_hotel = C.clave_hotel
