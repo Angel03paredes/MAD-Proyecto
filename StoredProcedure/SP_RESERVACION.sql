@@ -1,7 +1,14 @@
+USE [MAD_DB]
+GO
+/****** Object:  StoredProcedure [dbo].[SP_RESERVACION]    Script Date: 04/06/2020 10:28:45 p. m. ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
 ALTER PROCEDURE [dbo].[SP_RESERVACION]
 @caso BIGINT = null,
-@hab INT = null,
-@rfc varchar(13) = null,
+@hab varchar(50) =null,
+@rfc varchar(50) = null,
 @cant_pers INT=null,
 @anticipo MONEY = null,
 @forma_pago VARCHAR(50) = null,
@@ -13,20 +20,28 @@ ALTER PROCEDURE [dbo].[SP_RESERVACION]
 @clave_hotel VARCHAR(50) = null,
 @cl_res BIGINT = null,
 @num_res BIGINT = null,
-@monto Money = null
+@monto Money = null,
+@CANTIDAD BIGINT = null,
+@NUMEROR BIGINT =null,
+@idSERVICIO BIGINT =null
 
 AS
 --Delete From reservaciones 
 IF @caso = 1
 Begin
 
- 
+-- Delete reservaciones from reservaciones where id_hab IS NULL 
 
+SELECT* FROM dbo.reservaciones
+DECLARE @hab2 int
+
+SET @hab2 = (SELECT dbo.udfNetSale(@hab,@clave_hotel,@fecha_ini,@fecha_fin))
+
+--select * from reservaciones
 INSERT INTO  reservaciones(id_hab,rfc,cant_pers,anticipo,forma_pago,fecha_ini,fecha_fin,reservado,check_in,cancel)
-VALUES(@hab,@rfc,@cant_pers,@anticipo,@forma_pago,@fecha_ini,@fecha_fin,1,0,0)
+VALUES(@hab2,@rfc,@cant_pers,@anticipo,@forma_pago,@fecha_ini,@fecha_fin,1,0,0)
  
 
- 
 
 
 DECLARE @clave int
@@ -43,7 +58,7 @@ usuario_pais A INNER JOIN  pais B
 ON A.clave_pais = B.clave_pais
 WHERE A.no_nomina = @nomina
 END
-DELETE FROM dbo.reservaciones
+--DELETE FROM dbo.reservaciones
 
 
  
@@ -73,13 +88,20 @@ BEGIN
 --DECLARE @c_cl INT =0;
 --SET @c_cl = (SELECT  clave_hotel From hotel WHERE clave_pais= @clave_pais AND clave_ciudad = @clave_ciudad) ;
  
-SELECT  ROOM.id_hab As Clave, TIPO.nl_habitacion AS Tipo,TIPO.precioxnoche AS Precio, TIPO.frente_a As Frente,TIPO.capacidad AS Capacidad  
-FROM  hotel as WESTERN  FULL OUTER JOIN habitacion_hotel as ROOM ON WESTERN.clave_hotel = ROOM.clave_hotel 
-FULL OUTER JOIN habitacion as TIPO ON ROOM.id_habitacion =TIPO.id_habitacion  
-LEFT JOIN reservaciones as CHECKED ON CHECKED.id_hab = ROOM.id_hab
+SELECT Count(Tipo.nl_habitacion) AS Cantidad,  TIPO.nl_habitacion AS Tipo,TIPO.precioxnoche AS Precio, TIPO.frente_a As Frente,TIPO.capacidad AS Capacidad
+	--CHECKED.fecha_ini, CHECKED.fecha_fin
+FROM  hotel as WESTERN  
+inner JOIN habitacion_hotel as ROOM 
+	ON WESTERN.clave_hotel = ROOM.clave_hotel 
+inner JOIN habitacion as TIPO 
+	ON ROOM.id_habitacion =TIPO.id_habitacion  
+full JOIN reservaciones as CHECKED 
+	ON CHECKED.id_hab = ROOM.id_hab
 
-
-WHERE WESTERN.nombre = @clave_hotel 
+	
+WHERE WESTERN.nombre = @clave_hotel AND  CHECKED.fecha_ini IS NULL OR WESTERN.nombre = @clave_hotel AND  @fecha_ini NOT BETWEEN CHECKED.fecha_ini AND CHECKED.fecha_fin 
+AND  @fecha_fin NOT BETWEEN CHECKED.fecha_ini AND CHECKED.fecha_fin
+GROUP BY Tipo.nl_habitacion,tipo.precioxnoche,tipo.frente_a,tipo.capacidad
 
  
 
@@ -100,13 +122,56 @@ END
 
 IF @caso = 6
 BEGIN
- Select C.t_servicio AS Servicio,C.costo AS Costo, A.anticipo,A.cant_pers,A.forma_pago, D.precioxnoche FROM 
- reservaciones A INNER JOIN habitacion_hotel B ON A.id_hab = B.id_hab INNER JOIN servicios C ON
- B.clave_hotel = c.clave_hotel INNER JOIN habitacion D ON D.id_habitacion = B.id_habitacion WHERE A.clave_reservacion = @num_res
 
+
+
+
+BEGIN TRY 
+IF not exists(select 1 FROM reservaciones where reservado =0 and check_in =0 and clave_reservacion=@num_res )
+
+Select C.t_servicio AS Servicio,C.costo AS Costo, 
+A.anticipo as ADELANTO,A.cant_pers as PERSONAS,
+A.forma_pago, D.precioxnoche as PRECIOS ,
+C.id_servicio as Identificador ,DATEDIFF(dd,A.fecha_ini,A.fecha_fin) AS DIAS
+FROM reservaciones A 
+INNER JOIN habitacion_hotel B 
+ON A.id_hab = B.id_hab 
+INNER JOIN servicios C 
+ON B.clave_hotel = c.clave_hotel 
+INNER JOIN habitacion D 
+ON D.id_habitacion = B.id_habitacion 
+WHERE A.clave_reservacion = @num_res
+ELSE
+
+SELECT 1/0
+
+END TRY 
+
+BEGIN CATCH 
+
+THROW 51000, 'Error.', 1;  
+
+
+
+END CATCH
+
+
+
+---raiserror('',1,1)
+ 
 END
 
 IF @caso = 7 
 BEGIN
-UPDATE reservaciones SET anticipo = @monto ,  reservado = 0, check_in = 0 where clave_reservacion = @num_res
+UPDATE reservaciones SET pago_total = @monto ,  reservado = 0, check_in = 0 where clave_reservacion = @num_res
+END
+
+IF @caso = 8
+BEGIN
+INSERT INTO res_ser (numero,id_servicio,clave_reservacion) VALUES(@CANTIDAD,@idSERVICIO,@NUMEROR)            
+
+END
+IF @caso = 9
+BEGIN 
+UPDATE reservaciones SET cancel = 1 WHERE clave_reservacion = @cl_res AND reservado = 1 AND check_in = 0
 END
