@@ -1,0 +1,72 @@
+CREATE PROCEDURE [dbo].[SP_REPORTES]
+@rfc VARCHAR(50) = null,
+@caso INT = null,
+@mes DATETIME = null,
+@pais BIGINT = null,
+@filtro BIGINT = null,
+@folio BIGINT = null
+AS
+IF @caso =1
+BEGIN
+SELECT * FROM dbo.VW_HISTORIAL_CL
+WHERE rfc = @rfc
+END
+IF @caso =2
+BEGIN
+SELECT C.t_servicio AS servicio,Count(C.t_servicio) AS Cantidad,C.costo AS 'PRECIO C/U'
+FROM  reservaciones A 
+INNER JOIN res_ser B ON B.clave_reservacion = A.clave_reservacion
+INNER JOIN servicios C ON C.id_servicio = B.id_servicio
+WHERE A.clave_reservacion = @folio
+GROUP BY C.t_servicio,C.costo
+END
+If @caso =3
+BEGIN
+if @filtro = 1
+BEGIN
+SELECT C.nombre AS Hotel, D.nombre AS Ciudad ,SUM(A.pago_total) AS Total FROM reservaciones A INNER JOIN habitacion_hotel B ON A.id_hab = B.id_hab 
+INNER JOIN hotel C ON B.clave_hotel = C.clave_hotel 
+INNER JOIN ciudad D ON D.clave_ciudad = C.clave_ciudad 
+where @pais = C.clave_pais AND DATEPART(mm, @mes) = DATEPART(MM,A.fecha_fin) AND DATEPART(yy,@mes) = DATEPART (yy,fecha_fin)
+GROUP BY C.nombre,D.nombre,A.pago_total
+ORDER BY SUM(A.pago_total)
+END
+
+if @filtro = 2
+BEGIN
+SELECT C.nombre AS Hotel, D.nombre AS Ciudad ,SUM(A.pago_total) AS Total FROM reservaciones A INNER JOIN habitacion_hotel B ON A.id_hab = B.id_hab 
+INNER JOIN hotel C ON B.clave_hotel = C.clave_hotel 
+INNER JOIN ciudad D ON D.clave_ciudad = C.clave_ciudad 
+where @pais = C.clave_pais AND DATEPART(mm, @mes) = DATEPART(MM,A.fecha_fin) AND DATEPART(yy,@mes) = DATEPART (yy,fecha_fin)
+GROUP BY C.nombre,D.nombre,A.pago_total
+ORDER BY D.nombre
+END
+
+if @filtro = 3
+BEGIN
+SELECT C.nombre AS Hotel, D.nombre AS Ciudad ,SUM(A.pago_total) AS Total FROM reservaciones A INNER JOIN habitacion_hotel B ON A.id_hab = B.id_hab 
+INNER JOIN hotel C ON B.clave_hotel = C.clave_hotel 
+INNER JOIN ciudad D ON D.clave_ciudad = C.clave_ciudad 
+where @pais = C.clave_pais AND DATEPART(mm, @mes) = DATEPART(MM,A.fecha_fin) AND DATEPART(yy,@mes) = DATEPART (yy,fecha_fin)
+GROUP BY C.nombre,D.nombre,A.pago_total
+ORDER BY A.pago_total
+END
+END
+
+IF @caso = 5
+BEGIN
+
+Select A.pago_total,D.precioxnoche,G.nombre,G.domicilio,H.nombre,E.nombre,E.apellidop,E.apellidom,A.clave_reservacion,F.t_servicio,F.costo,A.anticipo,A.forma_pago FROM reservaciones A 
+inner JOIN res_ser B ON A.clave_reservacion = B.clave_reservacion 
+inner JOIN habitacion_hotel C ON A.id_hab = C.id_hab 
+inner JOIN habitacion D ON D.id_habitacion = C.id_habitacion
+inner JOIN cliente E ON E.rfc = A.rfc
+inner JOIN servicios F ON F.id_servicio = B.id_servicio
+inner Join hotel G ON G.clave_hotel = C.clave_hotel
+inner Join ciudad H ON H.clave_ciudad = G.clave_ciudad
+WHERE A.clave_reservacion = @folio
+GROUP BY F.costo, F.t_servicio, A.pago_total,D.precioxnoche,G.nombre,G.domicilio,h.nombre,e.nombre,E.apellidop,E.apellidom,A.clave_reservacion,A.anticipo,a.forma_pago
+END
+
+
+
