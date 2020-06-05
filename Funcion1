@@ -1,0 +1,27 @@
+USE [MAD_DB]
+GO
+/****** Object:  UserDefinedFunction [dbo].[udfNetSale]    Script Date: 05/06/2020 01:33:50 a. m. ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+ALTER FUNCTION [dbo].[udfNetSale](@hab varchar(50),@nhotel varchar(50),@fechain datetime,@fechafin datetime)
+RETURNS INT
+AS
+BEGIN
+DECLARE @room int
+DECLARE @room2 int
+SELECT @room = MAX(
+ habitacion_hotel.id_hab )FROM habitacion_hotel
+INNER JOIN habitacion
+ON habitacion_hotel.id_habitacion = habitacion.id_habitacion
+INNER JOIN hotel ON hotel.clave_hotel = habitacion_hotel.clave_hotel
+FULL OUTER JOIN reservaciones
+ON reservaciones.id_hab = habitacion_hotel.id_hab
+--select *from habitacion
+WHERE habitacion.nl_habitacion = @hab and hotel.nombre = @nhotel AND   reservaciones.fecha_ini IS NULL OR habitacion.nl_habitacion = @hab and hotel.nombre = @nhotel AND
+@fechain NOT BETWEEN reservaciones.fecha_ini AND reservaciones.fecha_fin
+AND @fechafin  NOT BETWEEN reservaciones.fecha_ini AND reservaciones.fecha_fin
+--SET @room2 =( SELECT CAST( MAX (@ROOM) AS int))  ;
+ RETURN @room
+END;
