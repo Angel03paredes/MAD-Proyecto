@@ -4,4 +4,4 @@ CREATE PROCEDURE [dbo].[SP_LOGIN]
 
 AS
 
-SELECT * FROM usuario WHERE no_nomina = @usuario AND contra = @contra;
+SELECT no_nomina FROM VW_LOGIN WHERE no_nomina = @usuario AND contra = @contra;
