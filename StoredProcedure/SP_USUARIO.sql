@@ -20,13 +20,13 @@ AS
 
 IF @caso = 1
 BEGIN
-INSERT INTO usuario ( no_nomina, nombre,apellido,domicilio, tel_casa, tel_cel , fecha_nac) 
-VALUES ( @no_nomina,@nombre,@apellido,@domicilio,@tel_casa,@tel_cel, @fecha_nac);
+INSERT INTO usuario ( no_nomina, nombre,apellido,domicilio, tel_casa, tel_cel , fecha_nac,contra) 
+VALUES ( @no_nomina,@nombre,@apellido,@domicilio,@tel_casa,@tel_cel, @fecha_nac,@contra);
 END
 
 IF @caso = 2
 BEGIN
-SELECT no_nomina As Nomina, nombre AS Nombre, apellido AS Apellido , domicilio As Domicilio FROM usuario ;
+SELECT no_nomina As Nomina, nombre AS Nombre, apellido AS Apellido , domicilio As Domicilio FROM VW_USU
 END
 
 IF @caso = 3
