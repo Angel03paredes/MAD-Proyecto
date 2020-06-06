@@ -1,0 +1,4 @@
+CREATE VIEW VW_PAIS
+AS
+SELECT        clave_pais, abrev, nombre
+FROM            dbo.pais
