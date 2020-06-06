@@ -1,0 +1,23 @@
+ALTER FUNCTION [dbo].[FT_PORCENTAJE](
+@colum int,
+@cantidad int
+)
+RETURNS decimal(7,2)
+BEGIN
+
+IF @colum = 0
+Return 0
+else
+
+DECLARE @porcentaje DECIMAL(7,2) 
+DECLARE @a DECIMAL(7,2) 
+DECLARE @b DECIMAL(7,2) 
+
+ SELECT @a =CONVERT(decimal(7,2),@colum)
+ SELECT @b = Convert(decimal(7,2),@cantidad)
+--Select @colum =  CAST(@colum as decimal(5,2))
+--Select @cantidad =  CAST(@cantidad as decimal(5,2))
+SET @porcentaje = (@a / @b) * 100
+
+Return CAST(@porcentaje as decimal(7,2) )
+END
