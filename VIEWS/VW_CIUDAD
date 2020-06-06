@@ -1,0 +1,5 @@
+CREATE VIEW VW_CIUDAD
+AS
+
+SELECT        clave_ciudad, nombre, clave_pais
+FROM            dbo.ciudad
