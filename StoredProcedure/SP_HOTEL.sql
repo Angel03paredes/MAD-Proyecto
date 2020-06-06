@@ -1,4 +1,3 @@
-
 CREATE PROCEDURE [dbo].[SP_HOTEL]
 
 
@@ -48,11 +47,8 @@ INSERT INTO hotel (nombre,domicilio,clave_pais,clave_ciudad,turistico,fecha_ini,
 
  IF @caso = 2
 Begin
-SELECT A.clave_hotel AS Clave ,A.nombre  AS Hotel, A.domicilio AS Domicilio, B.nombre AS Ciudad, C.nombre AS Pais FROM 
-hotel A INNER JOIN ciudad B 
-ON  A.clave_ciudad = B.clave_ciudad 
-INNER JOIN pais C 
-ON C.clave_pais = A.clave_pais;
+SELECT Hotel, Domicilio,  Ciudad,  Pais 
+FROM VW_HOTEL
 END
 
 
@@ -74,7 +70,7 @@ DECLARE @cnt INT = 0;
 
 WHILE @cnt < @veces
 BEGIN
-INSERT INTO habitacion_hotel(disponible,clave_hotel,id_habitacion) VALUES (0,@vari2,@hab) ;
+INSERT INTO habitacion_hotel(clave_hotel,id_habitacion) VALUES (@vari2,@hab) ;
    SET @cnt = @cnt + 1;
 END;
 
@@ -104,7 +100,7 @@ DECLARE @cnt2 INT = 0;
 
 WHILE @cnt2 < @veces
 BEGIN
-INSERT INTO habitacion_hotel(disponible,clave_hotel,id_habitacion) VALUES (0,@hotel,@hab) ;
+INSERT INTO habitacion_hotel(clave_hotel,id_habitacion) VALUES (@hotel,@hab) ;
    SET @cnt2 = @cnt2 + 1;
 END
 
