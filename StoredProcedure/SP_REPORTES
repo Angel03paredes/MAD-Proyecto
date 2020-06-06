@@ -1,4 +1,11 @@
-CREATE PROCEDURE [dbo].[SP_REPORTES]
+USE [MAD_DB]
+GO
+/****** Object:  StoredProcedure [dbo].[SP_REPORTES]    Script Date: 06/06/2020 02:52:23 a. m. ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+ALTER PROCEDURE [dbo].[SP_REPORTES]
 @rfc VARCHAR(50) = null,
 @caso INT = null,
 @mes DATETIME = null,
@@ -24,32 +31,32 @@ If @caso =3
 BEGIN
 if @filtro = 1
 BEGIN
-SELECT C.nombre AS Hotel, D.nombre AS Ciudad ,SUM(A.pago_total) AS Total FROM reservaciones A INNER JOIN habitacion_hotel B ON A.id_hab = B.id_hab 
+SELECT SUM(A.pago_total) AS Total,C.nombre AS Hotel, D.nombre AS Ciudad  FROM reservaciones A INNER JOIN habitacion_hotel B ON A.id_hab = B.id_hab 
 INNER JOIN hotel C ON B.clave_hotel = C.clave_hotel 
 INNER JOIN ciudad D ON D.clave_ciudad = C.clave_ciudad 
 where @pais = C.clave_pais AND DATEPART(mm, @mes) = DATEPART(MM,A.fecha_fin) AND DATEPART(yy,@mes) = DATEPART (yy,fecha_fin)
 GROUP BY C.nombre,D.nombre,A.pago_total
-ORDER BY SUM(A.pago_total)
+ORDER BY SUM(A.pago_total) DESC
 END
 
 if @filtro = 2
 BEGIN
-SELECT C.nombre AS Hotel, D.nombre AS Ciudad ,SUM(A.pago_total) AS Total FROM reservaciones A INNER JOIN habitacion_hotel B ON A.id_hab = B.id_hab 
+SELECT  D.nombre AS Ciudad ,C.nombre AS Hotel,SUM(A.pago_total) AS Total FROM reservaciones A INNER JOIN habitacion_hotel B ON A.id_hab = B.id_hab 
 INNER JOIN hotel C ON B.clave_hotel = C.clave_hotel 
 INNER JOIN ciudad D ON D.clave_ciudad = C.clave_ciudad 
 where @pais = C.clave_pais AND DATEPART(mm, @mes) = DATEPART(MM,A.fecha_fin) AND DATEPART(yy,@mes) = DATEPART (yy,fecha_fin)
 GROUP BY C.nombre,D.nombre,A.pago_total
-ORDER BY D.nombre
+ORDER BY D.nombre ASC
 END
 
 if @filtro = 3
 BEGIN
-SELECT C.nombre AS Hotel, D.nombre AS Ciudad ,SUM(A.pago_total) AS Total FROM reservaciones A INNER JOIN habitacion_hotel B ON A.id_hab = B.id_hab 
+SELECT SUM(A.pago_total) AS Total ,C.nombre AS Hotel, D.nombre AS Ciudad FROM reservaciones A INNER JOIN habitacion_hotel B ON A.id_hab = B.id_hab 
 INNER JOIN hotel C ON B.clave_hotel = C.clave_hotel 
 INNER JOIN ciudad D ON D.clave_ciudad = C.clave_ciudad 
 where @pais = C.clave_pais AND DATEPART(mm, @mes) = DATEPART(MM,A.fecha_fin) AND DATEPART(yy,@mes) = DATEPART (yy,fecha_fin)
 GROUP BY C.nombre,D.nombre,A.pago_total
-ORDER BY A.pago_total
+ORDER BY A.pago_total ASC
 END
 END
 
@@ -66,6 +73,46 @@ inner Join hotel G ON G.clave_hotel = C.clave_hotel
 inner Join ciudad H ON H.clave_ciudad = G.clave_ciudad
 WHERE A.clave_reservacion = @folio
 GROUP BY F.costo, F.t_servicio, A.pago_total,D.precioxnoche,G.nombre,G.domicilio,h.nombre,e.nombre,E.apellidop,E.apellidom,A.clave_reservacion,A.anticipo,a.forma_pago
+END
+
+
+
+
+IF @caso = 4
+BEGIN
+if @filtro = 1
+BEGIN
+SELECT        dbo.FT_PORCENTAJE( Count(hab), COUNT(C.id_hab) ) AS 'Porcentaje %', A.nombre AS Hotel,B.nombre AS Ciudad, D.capacidad AS Personas, D.nl_habitacion AS Tipo
+FROM           dbo.hotel AS A INNER JOIN ciudad AS B ON A.clave_ciudad  = B.clave_ciudad
+INNER JOIN habitacion_hotel C ON C.clave_hotel = A.clave_hotel 
+INNER JOIN habitacion D ON  D.id_habitacion = C.id_habitacion
+full JOIN dbo.FT_TABLA(@mes) E ON E.hab = C.id_hab
+GROUP BY A.nombre , B.nombre,D.capacidad,D.nl_habitacion,A.clave_pais
+HAVING @pais = A.clave_pais
+ORDER BY 'Porcentaje %' DESC
+END
+if @filtro = 2
+BEGIN
+SELECT       B.nombre AS Ciudad, A.nombre AS Hotel, D.capacidad AS Personas, D.nl_habitacion AS Tipo, dbo.FT_PORCENTAJE( Count(hab), COUNT(C.id_hab) ) AS 'Porcentaje %'
+FROM           dbo.hotel AS A INNER JOIN ciudad AS B ON A.clave_ciudad  = B.clave_ciudad
+INNER JOIN habitacion_hotel C ON C.clave_hotel = A.clave_hotel 
+INNER JOIN habitacion D ON  D.id_habitacion = C.id_habitacion
+full JOIN dbo.FT_TABLA(@mes) E ON E.hab = C.id_hab
+GROUP BY A.nombre , B.nombre,D.capacidad,D.nl_habitacion,A.clave_pais
+HAVING @pais = A.clave_pais
+ORDER BY B.nombre ASC
+END
+if @filtro = 3
+BEGIN
+SELECT        A.nombre AS Hotel,B.nombre AS Ciudad, D.capacidad AS Personas, D.nl_habitacion AS Tipo, dbo.FT_PORCENTAJE( Count(hab), COUNT(C.id_hab) ) AS 'Porcentaje %'
+FROM           dbo.hotel AS A INNER JOIN ciudad AS B ON A.clave_ciudad  = B.clave_ciudad
+INNER JOIN habitacion_hotel C ON C.clave_hotel = A.clave_hotel 
+INNER JOIN habitacion D ON  D.id_habitacion = C.id_habitacion
+full JOIN dbo.FT_TABLA(@mes) E ON E.hab = C.id_hab
+GROUP BY A.nombre , B.nombre,D.capacidad,D.nl_habitacion,A.clave_pais
+HAVING @pais = A.clave_pais
+ORDER BY A.nombre ASC
+END
 END
 
 
