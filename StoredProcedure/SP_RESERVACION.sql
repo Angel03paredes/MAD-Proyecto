@@ -1,11 +1,5 @@
-USE [MAD_DB]
-GO
-/****** Object:  StoredProcedure [dbo].[SP_RESERVACION]    Script Date: 04/06/2020 10:28:45 p. m. ******/
-SET ANSI_NULLS ON
-GO
-SET QUOTED_IDENTIFIER ON
-GO
-ALTER PROCEDURE [dbo].[SP_RESERVACION]
+
+CREATE PROCEDURE [dbo].[SP_RESERVACION]
 @caso BIGINT = null,
 @hab varchar(50) =null,
 @rfc varchar(50) = null,
@@ -32,7 +26,7 @@ Begin
 
 -- Delete reservaciones from reservaciones where id_hab IS NULL 
 
-SELECT* FROM dbo.reservaciones
+--SELECT* FROM dbo.reservaciones
 DECLARE @hab2 int
 
 SET @hab2 = (SELECT dbo.udfNetSale(@hab,@clave_hotel,@fecha_ini,@fecha_fin))
@@ -46,7 +40,7 @@ VALUES(@hab2,@rfc,@cant_pers,@anticipo,@forma_pago,@fecha_ini,@fecha_fin,1,0,0)
 
 DECLARE @clave int
 SET @clave = (SELECT MAX(clave_reservacion) FROM dbo.reservaciones)
-SELECT @clave
+SELECT @clave , correo FROM cliente Where rfc = @rfc
 END
 
  
