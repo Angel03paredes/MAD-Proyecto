@@ -12,10 +12,10 @@ END
 
 IF @caso = 2
 BEGIN
-SELECT clave_pais , abrev FROM pais ;
+SELECT clave_pais , abrev FROM VW_PAIS ;
 END
 
 IF @caso = 3
 BEGIN
-SELECT clave_ciudad, nombre from ciudad WHERE clave_pais = @idpais
+SELECT clave_ciudad, nombre from VW_CIUDAD WHERE clave_pais = @idpais
 END
