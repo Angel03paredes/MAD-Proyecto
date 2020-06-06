@@ -1,0 +1,4 @@
+CREATE VIEW VW_LOGIN
+AS
+SELECT        no_nomina, contra, domicilio, tel_casa, tel_cel, fecha_nac
+FROM            dbo.usuario
