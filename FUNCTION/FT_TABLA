@@ -1,0 +1,10 @@
+CREATE FUNCTION [dbo].[FT_TABLA]
+(@mes datetime )
+RETURNS TABLE
+AS
+RETURN
+
+Select A.id_hab AS hab from habitacion_hotel A inner join reservaciones B
+ON A.id_hab = B.id_hab 
+
+where @mes BETWEEN B.fecha_fin AND  B.fecha_fin
