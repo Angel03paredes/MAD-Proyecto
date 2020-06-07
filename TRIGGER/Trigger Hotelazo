@@ -1,0 +1,11 @@
+CREATE TRIGGER [dbo].[TG_HOTELAZO]
+ON [dbo].[hotel]
+INSTEAD OF DELETE
+
+AS
+
+BEGIN
+SELECT nombre,'Los hoteles son inmortales' FROM dbo.hotel
+END
+
+DELETE hotel
