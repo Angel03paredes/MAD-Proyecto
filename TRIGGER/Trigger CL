@@ -1,11 +1,5 @@
-USE [MAD_DB]
-GO
-/****** Object:  Trigger [dbo].[TG_CL]    Script Date: 07/06/2020 02:54:39 a. m. ******/
-SET ANSI_NULLS ON
-GO
-SET QUOTED_IDENTIFIER ON
-GO
-ALTER TRIGGER [dbo].[TG_CL]
+
+CREATE TRIGGER [dbo].[TG_CL]
 ON [dbo].[cliente]
 AFTER INSERT
 
