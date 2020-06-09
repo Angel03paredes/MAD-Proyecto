@@ -263,6 +263,21 @@ INSERT INTO  ciudad(nombre,clave_pais) Values ('Venecia',21)
 INSERT INTO  ciudad(nombre,clave_pais) Values ('Milan',21)
 INSERT INTO  ciudad(nombre,clave_pais) Values ('Florencia',21)
 
+Insert into ciudad (nombre,clave_pais)Values ('Erevan',2)
+
+Insert into ciudad (nombre,clave_pais)Values ('Sidney',3)
+
+Insert into ciudad (nombre,clave_pais)Values ('Viena',4)
+
+Insert into ciudad (nombre,clave_pais)Values ('Bruselas',5)
+
+Insert into ciudad (nombre,clave_pais)Values ('Sucre',6)
+
+Insert into ciudad (nombre,clave_pais)Values ('Brasilia',7)
+
+Insert into ciudad (nombre,clave_pais)Values ('Toronto',8)
+
+
 
 				
 				
