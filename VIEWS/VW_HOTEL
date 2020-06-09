@@ -1,6 +1,6 @@
 CREATE VIEW VW_HOTEL
 AS
-SELECT        A.nombre AS Hotel, A.domicilio, B.nombre AS Ciudad, C.nombre AS Pais
+SELECT        A.nombre AS Hotel, A.domicilio, B.nombre AS Ciudad, C.nombre AS Pais, A.clave_hotel AS Clave
 FROM            dbo.hotel AS A INNER JOIN
                          dbo.ciudad AS B ON A.clave_ciudad = B.clave_ciudad INNER JOIN
                          dbo.pais AS C ON C.clave_pais = A.clave_pais
