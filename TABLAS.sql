@@ -1,5 +1,5 @@
 CREATE DATABASE MAD_DB;
-
+go
 USE MAD_DB
 go
 
