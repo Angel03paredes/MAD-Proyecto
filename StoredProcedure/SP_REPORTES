@@ -9,7 +9,7 @@ CREATE PROCEDURE [dbo].[SP_REPORTES]
 AS
 IF @caso =1
 BEGIN
-SELECT * FROM dbo.VW_HISTORIAL_CL
+SELECT Hotel, [DE:],[A:],[Total Neto],Personas,Folio,rfc FROM dbo.VW_HISTORIAL_CL
 WHERE rfc = @rfc
 END
 IF @caso =2
