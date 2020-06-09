@@ -238,6 +238,32 @@ INSERT INTO ciudad (nombre, clave_pais) VALUES ('Puebla-Tlaxcala',	26	);
 INSERT INTO ciudad (nombre, clave_pais) VALUES ('Tehuacán',	26	);
 INSERT INTO ciudad (nombre, clave_pais) VALUES ('Querétaro',	26	);
 
+INSERT INTO  ciudad(nombre,clave_pais) Values ('Rosario',1)
+INSERT INTO  ciudad(nombre,clave_pais) Values ('Mar del Palta',1)
+INSERT INTO  ciudad(nombre,clave_pais) Values ('Ciudad de Cordoba',1)
+INSERT INTO  ciudad(nombre,clave_pais) Values ('Buenos Aires',1)
+
+INSERT INTO  ciudad(nombre,clave_pais) Values ('Nueva York',54)
+INSERT INTO  ciudad(nombre,clave_pais) Values ('Los Angeles',54)
+INSERT INTO  ciudad(nombre,clave_pais) Values ('Chicago',54)
+INSERT INTO  ciudad(nombre,clave_pais) Values ('San Francisco',54)
+
+INSERT INTO  ciudad(nombre,clave_pais) Values ('Berlin',19)
+INSERT INTO  ciudad(nombre,clave_pais) Values ('Munich',19)
+INSERT INTO  ciudad(nombre,clave_pais) Values ('Hamurgo',19)
+INSERT INTO  ciudad(nombre,clave_pais) Values ('Colonia',19)
+
+INSERT INTO  ciudad(nombre,clave_pais) Values ('Madrid',46)
+INSERT INTO  ciudad(nombre,clave_pais) Values ('Barcelona',46)
+INSERT INTO  ciudad(nombre,clave_pais) Values ('Sevilla',46)
+INSERT INTO  ciudad(nombre,clave_pais) Values ('Bilboa',46)
+
+INSERT INTO  ciudad(nombre,clave_pais) Values ('Roma',21)
+INSERT INTO  ciudad(nombre,clave_pais) Values ('Venecia',21)
+INSERT INTO  ciudad(nombre,clave_pais) Values ('Milan',21)
+INSERT INTO  ciudad(nombre,clave_pais) Values ('Florencia',21)
+
+
 				
 				
 				
