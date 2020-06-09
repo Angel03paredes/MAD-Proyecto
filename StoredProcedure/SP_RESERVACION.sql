@@ -20,7 +20,7 @@ CREATE PROCEDURE [dbo].[SP_RESERVACION]
 @idSERVICIO BIGINT =null
 
 AS
---Delete From reservaciones 
+Delete From reservaciones 
 IF @caso = 1
 Begin
 
