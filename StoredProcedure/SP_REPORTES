@@ -35,7 +35,7 @@ SELECT SUM(A.pago_total) AS Total,C.nombre AS Hotel, D.nombre AS Ciudad  FROM re
 INNER JOIN hotel C ON B.clave_hotel = C.clave_hotel 
 INNER JOIN ciudad D ON D.clave_ciudad = C.clave_ciudad 
 where @pais = C.clave_pais AND DATEPART(mm, @mes) = DATEPART(MM,A.fecha_fin) AND DATEPART(yy,@mes) = DATEPART (yy,fecha_fin)
-GROUP BY C.nombre,D.nombre,A.pago_total
+GROUP BY C.nombre,D.nombre
 ORDER BY SUM(A.pago_total) DESC
 END
 
@@ -45,7 +45,7 @@ SELECT  D.nombre AS Ciudad ,C.nombre AS Hotel,SUM(A.pago_total) AS Total FROM re
 INNER JOIN hotel C ON B.clave_hotel = C.clave_hotel 
 INNER JOIN ciudad D ON D.clave_ciudad = C.clave_ciudad 
 where @pais = C.clave_pais AND DATEPART(mm, @mes) = DATEPART(MM,A.fecha_fin) AND DATEPART(yy,@mes) = DATEPART (yy,fecha_fin)
-GROUP BY C.nombre,D.nombre,A.pago_total
+GROUP BY C.nombre,D.nombre
 ORDER BY D.nombre ASC
 END
 
@@ -55,7 +55,7 @@ SELECT SUM(A.pago_total) AS Total ,C.nombre AS Hotel, D.nombre AS Ciudad FROM re
 INNER JOIN hotel C ON B.clave_hotel = C.clave_hotel 
 INNER JOIN ciudad D ON D.clave_ciudad = C.clave_ciudad 
 where @pais = C.clave_pais AND DATEPART(mm, @mes) = DATEPART(MM,A.fecha_fin) AND DATEPART(yy,@mes) = DATEPART (yy,fecha_fin)
-GROUP BY C.nombre,D.nombre,A.pago_total
+GROUP BY C.nombre,D.nombre
 ORDER BY A.pago_total ASC
 END
 END
