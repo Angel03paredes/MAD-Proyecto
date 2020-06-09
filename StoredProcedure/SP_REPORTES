@@ -1,11 +1,5 @@
-USE [MAD_DB]
-GO
-/****** Object:  StoredProcedure [dbo].[SP_REPORTES]    Script Date: 06/06/2020 02:52:23 a. m. ******/
-SET ANSI_NULLS ON
-GO
-SET QUOTED_IDENTIFIER ON
-GO
-ALTER PROCEDURE [dbo].[SP_REPORTES]
+
+CREATE PROCEDURE [dbo].[SP_REPORTES]
 @rfc VARCHAR(50) = null,
 @caso INT = null,
 @mes DATETIME = null,
