@@ -1,4 +1,4 @@
-ALTER FUNCTION [dbo].[FT_PORCENTAJE](
+CREATE FUNCTION [dbo].[FT_PORCENTAJE](
 @colum int,
 @cantidad int
 )
