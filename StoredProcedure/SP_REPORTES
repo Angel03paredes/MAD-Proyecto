@@ -30,7 +30,7 @@ INNER JOIN hotel C ON B.clave_hotel = C.clave_hotel
 INNER JOIN ciudad D ON D.clave_ciudad = C.clave_ciudad 
 where @pais = C.clave_pais AND DATEPART(mm, @mes) = DATEPART(MM,A.fecha_fin) AND DATEPART(yy,@mes) = DATEPART (yy,fecha_fin)
 GROUP BY C.nombre,D.nombre
-ORDER BY SUM(A.pago_total) DESC
+ORDER BY Total DESC
 END
 
 if @filtro = 2
@@ -50,7 +50,7 @@ INNER JOIN hotel C ON B.clave_hotel = C.clave_hotel
 INNER JOIN ciudad D ON D.clave_ciudad = C.clave_ciudad 
 where @pais = C.clave_pais AND DATEPART(mm, @mes) = DATEPART(MM,A.fecha_fin) AND DATEPART(yy,@mes) = DATEPART (yy,fecha_fin)
 GROUP BY C.nombre,D.nombre
-ORDER BY A.pago_total ASC
+ORDER BY Total ASC
 END
 END
 
@@ -108,6 +108,5 @@ HAVING @pais = A.clave_pais
 ORDER BY A.nombre ASC
 END
 END
-
 
 
