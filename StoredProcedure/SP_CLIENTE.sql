@@ -15,6 +15,6 @@ CREATE PROCEDURE [dbo].[SP_CLIENTE]
 
 
 AS
-Select * from cliente
+
 INSERT INTO cliente(nombre,apellidop,apellidom,domicilio,rfc,correo,tel_casa,tel_cel,referencia,fecha_nac)
 VALUES(@nombre,@apellidoP,@apellidoM,@domicilio,@RFC,@correo,@telcasa,@telcel,@Referencia,@Fecha_NA)
