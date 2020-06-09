@@ -1,5 +1,5 @@
 USE MAD_DB
-GO;
+GO
 
 INSERT INTO pais (abrev ,nombre) VALUES ('ARG', 'Argentina');						
 INSERT INTO pais (abrev ,nombre) VALUES ('ARM', 'Armenia');						
