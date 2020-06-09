@@ -1,5 +1,5 @@
 
-ALTER FUNCTION [dbo].[udfNetSale](@hab varchar(50),@nhotel varchar(50),@fechain datetime,@fechafin datetime)
+CREATE FUNCTION [dbo].[udfNetSale](@hab varchar(50),@nhotel varchar(50),@fechain datetime,@fechafin datetime)
 RETURNS INT
 AS
 BEGIN
