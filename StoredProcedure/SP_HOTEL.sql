@@ -47,7 +47,7 @@ INSERT INTO hotel (nombre,domicilio,clave_pais,clave_ciudad,turistico,fecha_ini,
 
  IF @caso = 2
 Begin
-SELECT Hotel, Domicilio,  Ciudad,  Pais 
+SELECT Hotel, Domicilio,  Ciudad,  Pais ,Clave
 FROM VW_HOTEL
 END
 
